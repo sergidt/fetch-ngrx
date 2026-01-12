@@ -1,1 +1,34 @@
-/* You can add global styles to this file, and also import other style files */
+
+
+body {
+    padding: 20px;
+}
+
+pre {
+  border-left: 3px solid rgba(0,0,0,0.21);
+  padding-left: 12px;
+  background-color: rgba(31, 31, 31, 0.76);
+}
+
+
+
+.list {
+display: flex;
+flex-direction: column;
+margin: 10px 0;
+gap: 4px;
+
+    .list-item {
+border-radius: 4px;
+padding: 8px;
+background-color: rgb(221, 242, 255);
+    }
+}
+
+.bottom-margin {
+    margin-bottom: 40px;
+}
+
+.top-margin {
+    margin-top: 40px;
+}
