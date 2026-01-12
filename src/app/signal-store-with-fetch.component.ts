@@ -1,12 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { patchState, signalStore, withMethods, withState } from "@ngrx/signals";
 import { MarkdownComponent } from "ngx-markdown";
-
-type User = { id: number; name: string };
+import { SimpleUser } from "./models";
 
 type UserState = {
-    users: User[];
+    users: SimpleUser[];
     isLoading: boolean;
     error: string | null;
 };
@@ -19,6 +18,7 @@ const initialState: UserState = {
 
 export const UserStore = signalStore(
     withState(initialState),
+
     withMethods((store) => ({
         // async/await instead of Observables
         async loadAll() {
@@ -42,7 +42,7 @@ export const UserStore = signalStore(
 );
 
 @Component({
-    selector: 'ngrx-fetch',
+    selector: 'signal-store-with-fetch',
     imports: [CommonModule, MarkdownComponent],
     providers: [UserStore],
     template: `
@@ -73,7 +73,7 @@ export const UserStore = signalStore(
         }
         `]
 })
-export class NgrxFetchComponent {
+export class SignalStoreWithFetchComponent implements OnInit {
     readonly store = inject(UserStore);
 
     ngOnInit() {
