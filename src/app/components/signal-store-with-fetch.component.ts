@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, inject, OnInit } from "@angular/core";
 import { patchState, signalStore, withMethods, withState } from "@ngrx/signals";
 import { MarkdownComponent } from "ngx-markdown";
-import { SimpleUser } from "./models";
+import { SimpleUser } from "../models";
 
 type UserState = {
     users: SimpleUser[];
@@ -16,7 +16,7 @@ const initialState: UserState = {
     error: null,
 };
 
-export const UserStore = signalStore(
+const UserStore = signalStore(
     withState(initialState),
 
     withMethods((store) => ({

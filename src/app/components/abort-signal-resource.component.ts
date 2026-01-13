@@ -3,46 +3,46 @@ import { Component, inject } from "@angular/core";
 
 import { patchState, signalStore, withComputed, withMethods, withProps, withState } from '@ngrx/signals';
 import { resource, computed } from '@angular/core';
-import { User } from "./models";
+import { User } from "../models";
 
-export const UserSearchStore = signalStore(
-    withState({ query: '' }),
+const UserSearchStore = signalStore(
+  withState({ query: '' }),
 
-    withProps((store) => ({
-        usersResource: resource({
-            params: () => store.query(),
-            loader: async ({ params, abortSignal }) => {
-                // Simulate a small delay to see better the cancellation in the Network tab
-                await new Promise(resolve => setTimeout(resolve, 300));
+  withProps((store) => ({
+    usersResource: resource({
+      params: () => store.query(),
+      loader: async ({ params, abortSignal }) => {
+        // Simulate a small delay to see better the cancellation in the Network tab
+        await new Promise(resolve => setTimeout(resolve, 300));
 
-                const url = params
-                    ? `https://jsonplaceholder.typicode.com/users?q=${params}`
-                    : `https://jsonplaceholder.typicode.com/users`;
+        const url = params
+          ? `https://jsonplaceholder.typicode.com/users?q=${params}`
+          : `https://jsonplaceholder.typicode.com/users`;
 
-                const response = await fetch(url, { signal: abortSignal });
+        const response = await fetch(url, { signal: abortSignal });
 
-                return (await response.json()) as User[];
-            },
-        })
-    })),
+        return (await response.json()) as User[];
+      },
+    })
+  })),
 
-    withComputed((store) => ({
-        users: computed(() => store.usersResource.value() ?? []),
-        isLoading: computed(() => store.usersResource.isLoading()),
-        error: computed(() => store.usersResource.error()),
-    })),
+  withComputed((store) => ({
+    users: computed(() => store.usersResource.value() ?? []),
+    isLoading: computed(() => store.usersResource.isLoading()),
+    error: computed(() => store.usersResource.error()),
+  })),
 
-    withMethods((store) => ({
-        updateQuery(newQuery: string) {
-            patchState(store, { query: newQuery });
-        },
-    }))
+  withMethods((store) => ({
+    updateQuery(newQuery: string) {
+      patchState(store, { query: newQuery });
+    },
+  }))
 );
 @Component({
-    selector: 'abort-signal-resource',
-    imports: [CommonModule],
-    providers: [UserSearchStore],
-    template: `
+  selector: 'abort-signal-resource',
+  imports: [CommonModule],
+  providers: [UserSearchStore],
+  template: `
     <div class="container">
       <h1>Users search</h1>
 
@@ -80,7 +80,7 @@ export const UserSearchStore = signalStore(
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .container { padding: 2rem; font-family: sans-serif; }
     .search-box input { padding: 0.5rem; width: 100%; max-width: 400px; margin-bottom: 1rem; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
@@ -90,5 +90,5 @@ export const UserSearchStore = signalStore(
   `]
 })
 export class AbortSignalResourceComponent {
-    readonly store = inject(UserSearchStore);
+  readonly store = inject(UserSearchStore);
 }

@@ -3,23 +3,23 @@ body {
 }
 
 pre {
-  border-left: 3px solid rgba(0,0,0,0.21);
-  padding-left: 12px;
-  background-color: rgba(31, 31, 31, 0.76);
+    border-left: 3px solid rgba(0, 0, 0, 0.21);
+    padding-left: 12px;
+    background-color: rgba(31, 31, 31, 0.76);
 }
 
 
 
 .list {
-display: flex;
-flex-direction: column;
-margin: 10px 0;
-gap: 4px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+    gap: 4px;
 
     .list-item {
-border-radius: 4px;
-padding: 8px;
-background-color: rgb(221, 242, 255);
+        border-radius: 4px;
+        padding: 8px;
+        background-color: rgb(221, 242, 255);
     }
 }
 
@@ -55,7 +55,15 @@ markdown {
     }
 
     li {
-    list-style: circle;    
-    margin-left: 20px;
+        list-style: circle;
+        margin-left: 20px;
+    }
+
+    ol {
+        margin: 10px 0;
+
+        li {
+            list-style: decimal;
+        }
     }
 }

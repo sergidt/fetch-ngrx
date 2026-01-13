@@ -17,5 +17,11 @@ export class MarkdownInterceptorsComponent {
 This is a key question. When you switch from using Angular's HttpClient to the Fetch API (which is what we use inside a resource loader), you lose the automatic connection to classic Angular interceptors.
 
 Angular interceptors (HttpInterceptorFn) are designed specifically for HttpClient. If you do a fetch(), the request goes "outside" the Angular system and will not see any authentication tokens or headers you have defined in the interceptors.
+
+Depending on your needs, you can either:
+
+1. Use a "wrapper" strategy aroung the fetch API.
+2. Use resource + HttpClient.
+3. Dynamic strategy using a service as a Facade.
 `;
 }

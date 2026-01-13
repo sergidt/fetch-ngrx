@@ -6,7 +6,6 @@ import { MarkdownComponent } from "ngx-markdown";
     selector: 'markdown-fetch-vs-resource',
     imports: [CommonModule, MarkdownComponent],
     template: `
-    <h2 class="title is-4">Differences</h2>
  <markdown [data]="markdown1"> </markdown>
 
      <h2 class="title is-4 top-margin">Workflow</h2>
