@@ -8,6 +8,9 @@ import { MarkdownAbortSignalComponent } from "./components/markdown-abort-signal
 import { AbortSignalResourceComponent } from './components/abort-signal-resource.component';
 import { MarkdownInterceptorsComponent } from "./components/markdown-interceptors.component";
 import { FetchApiWrapperComponent } from "./components/fetch-api-wrapper.component";
+import { RxResourceComponent } from "./components/rxresource.component";
+import { ServiceStrategyComponent } from "./components/service-strategy.component";
+import { StrategySelectionComponent } from "./components/strategy-selection.component";
 
 
 @Component({
@@ -20,7 +23,10 @@ import { FetchApiWrapperComponent } from "./components/fetch-api-wrapper.compone
     MarkdownAbortSignalComponent,
     AbortSignalResourceComponent,
     MarkdownInterceptorsComponent,
-    FetchApiWrapperComponent
+    FetchApiWrapperComponent,
+    RxResourceComponent,
+    ServiceStrategyComponent,
+    StrategySelectionComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
