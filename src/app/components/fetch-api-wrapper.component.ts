@@ -8,35 +8,42 @@ import { User } from "../models";
 
 
 
-const GlobalRequestInit: InjectionToken<RequestInit> = new InjectionToken<RequestInit>('GlobalRequestInit');
+export interface GlobalFetchApiConfig {
+    options?: RequestInit;
+    requestTimeout?: number;
+}
+
+const GlobalFetchApiConfig: InjectionToken<GlobalFetchApiConfig> = new InjectionToken<GlobalFetchApiConfig>('GlobalFetchApiConfig');
 
 @Injectable({ providedIn: 'root' })
 export class FetchApiClient {
     private readonly baseUrl = 'https://jsonplaceholder.typicode.com';
 
-    globalRequestInit = inject(GlobalRequestInit, { optional: true });
+    globalFetchApiConfig = inject(GlobalFetchApiConfig, { optional: true });
 
     /**
      * Generic method to perform HTTP requests.
      * @param path The API path (ex: '/users')
      * @param options Additional configuration (method, body, signal, etc.)
      */
-    async request<T>(path: string, options: RequestInit = {}): Promise<T> {
+    async fetch<T>(path: string, fetchConfig: GlobalFetchApiConfig = {}): Promise<T> {
         const url = `${this.baseUrl}${path}`;
 
+
+
         // If method is not provided, we put GET by default
-        const method = options.method || 'GET';
+        const method = fetchConfig.options?.method || 'GET';
 
         // Headers globals
         const headers: HeadersInit = {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
             'X-App-Version': '1.0.0',
-            ...(this.globalRequestInit?.headers || options.headers), // Always prefer global headers. If not provided, headers by parameter
+            ...(this.globalFetchApiConfig?.options?.headers || fetchConfig.options?.headers), // Always prefer global headers. If not provided, headers by parameter
         };
 
         const config: RequestInit = {
-            ...(this.globalRequestInit || options),
+            ...(this.globalFetchApiConfig?.options || fetchConfig.options),
             method,
             headers
         };
@@ -60,20 +67,20 @@ export class FetchApiClient {
     }
 
     // Other methods (for having a cleaner code)
-    get<T>(path: string, options?: RequestInit) {
-        return this.request<T>(path, { ...options, method: 'GET' });
+    get<T>(path: string, requestOptions?: GlobalFetchApiConfig) {
+        return this.fetch<T>(path, { ...requestOptions, options: { method: 'GET' } });
     }
 
-    post<T>(path: string, body: any, options?: RequestInit) {
-        return this.request<T>(path, { ...options, method: 'POST', body });
+    post<T>(path: string, body: any, requestOptions?: GlobalFetchApiConfig) {
+        return this.fetch<T>(path, { ...requestOptions, options: { method: 'POST', body } });
     }
 
-    put<T>(path: string, body: any, options?: RequestInit) {
-        return this.request<T>(path, { ...options, method: 'PUT', body });
+    put<T>(path: string, body: any, requestOptions?: GlobalFetchApiConfig) {
+        return this.fetch<T>(path, { ...requestOptions, options: { method: 'PUT', body } });
     }
 
-    delete<T>(path: string, options?: RequestInit) {
-        return this.request<T>(path, { ...options, method: 'DELETE' });
+    delete<T>(path: string, requestOptions?: GlobalFetchApiConfig) {
+        return this.fetch<T>(path, { ...requestOptions, options: { method: 'DELETE' } });
     }
 }
 
@@ -113,13 +120,16 @@ const UserResourceStore = signalStore(
     imports: [CommonModule, MarkdownComponent],
     providers: [
         {
-            provide: GlobalRequestInit,
+            provide: GlobalFetchApiConfig,
             useValue: {
-                headers: {
-                    //   'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json',
-                    'X-App-Version': '1.0.0',
-                }
+                options: {
+                    headers: {
+                        //   'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json',
+                        'X-App-Version': '1.0.0',
+                    }
+                },
+                requestTimeout: 5000
             }
         },
         FetchApiClient,
